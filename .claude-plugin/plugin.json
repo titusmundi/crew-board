@@ -1,0 +1,10 @@
+{
+  "name": "crew-board",
+  "version": "0.1.0",
+  "description": "Set up and grow a Crew Board: one live page with your jobs' schedule, materials and tools, built and kept current by Claude alongside your Obsidian vault.",
+  "author": { "name": "Titus Mundi LLC", "url": "https://titusmundi.com" },
+  "homepage": "https://titusmundi.com",
+  "repository": "https://github.com/titusmundi/crew-board",
+  "license": "MIT",
+  "keywords": ["obsidian", "claude-code", "scheduling", "trades", "job-board"]
+}

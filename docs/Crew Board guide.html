@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How a Crew Board comes to life</title>
+<style>
+  /* Titus Mundi paper: white page, horizontal lockup top left, contact lines top right, footer bottom left.
+     Fonts: Source Serif 4 (display) and Source Sans 3 (body), SIL OFL, files in assets/fonts. */
+  @font-face { font-family:"Source Serif 4"; src:url("assets/fonts/SourceSerif4-roman-latin.woff2") format("woff2"); font-weight:200 900; font-style:normal; }
+  @font-face { font-family:"Source Serif 4"; src:url("assets/fonts/SourceSerif4-italic-latin.woff2") format("woff2"); font-weight:200 900; font-style:italic; }
+  @font-face { font-family:"Source Sans 3"; src:url("assets/fonts/SourceSans3-roman-latin.woff2") format("woff2"); font-weight:200 900; font-style:normal; }
+  :root { --navy:#16163A; --navy-90:#2D2D4E; --navy-70:#5C5C75; --navy-30:#B9B9C4; --navy-10:#E8E8EB; --cream:#FFF6E6; --cobalt:#2B44FF; --yellow:#FFC93C; }
+  @page { size: Letter; margin: 1.55in 0.85in 0.95in 0.85in;
+          @top-left { content: url("assets/titus-mundi-horizontal-print.svg"); vertical-align: bottom; padding-bottom: 0.15in; }
+          @top-right { content: "titusmundi.com\A jc@titusmundi.com\A Atlanta, Georgia"; white-space: pre; text-align: right; vertical-align: bottom; padding-bottom: 0.2in;
+                       font-family: "Source Sans 3", sans-serif; font-size: 8.5pt; line-height: 1.35; color: #2D2D4E; }
+          @bottom-left { content: "Titus Mundi LLC \00B7  Atlanta, Georgia"; font-family: "Source Sans 3", sans-serif; font-size: 8pt; color: #5C5C75; vertical-align: top; padding-top: 0.2in; }
+          @bottom-right { content: counter(page); font-family: "Source Sans 3", sans-serif; font-size: 8.5pt; color: #5C5C75; vertical-align: top; padding-top: 0.2in; } }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif; color:var(--navy-90); font-size:10.5pt; line-height:1.5; margin:0; background:#fff; }
+  h1, h2, h3 { font-family:"Source Serif 4",Georgia,serif; color:var(--navy); line-height:1.15; font-weight:600; }
+  h1 { font-size:30pt; margin:0 0 8pt; font-weight:500; }
+  h2 { font-size:17pt; margin:24pt 0 7pt; padding-top:8pt; border-top:1.5px solid var(--navy-10); break-after:avoid; }
+  h2.first { border-top:none; padding-top:0; margin-top:0; }
+  h3 { font-size:12.5pt; margin:15pt 0 4pt; break-after:avoid; }
+  p { margin:0 0 8pt; }
+  ul, ol { margin:0 0 8pt 0; padding-left:18pt; }
+  li { margin-bottom:3pt; }
+  li::marker { color:var(--cobalt); }
+  b { color:var(--navy); font-weight:600; }
+  a { color:var(--cobalt); text-decoration:underline; text-underline-offset:2px; }
+  table { width:100%; border-collapse:collapse; margin:6pt 0 12pt; font-size:9.5pt; break-inside:avoid; }
+  th, td { border:none; border-bottom:1px solid var(--navy-10); padding:5pt 8pt; text-align:left; vertical-align:top; }
+  th { background:var(--navy); color:#fff; font-size:8.5pt; text-transform:uppercase; letter-spacing:.06em; font-weight:600; }
+  .cover { height:7.5in; display:flex; flex-direction:column; justify-content:center; break-after:page; }
+  .cover .kicker { text-transform:uppercase; letter-spacing:.14em; color:var(--cobalt); font-size:9.5pt; font-weight:600; margin-bottom:10pt; }
+  .cover .sub { font-family:"Source Serif 4",Georgia,serif; font-size:14pt; line-height:1.4; color:var(--navy-70); max-width:5.6in; }
+  .rule { height:3px; width:1.6in; background:var(--cobalt); margin:16pt 0; }
+  .box { background:var(--cream); border-left:4px solid var(--cobalt); padding:8pt 12pt; margin:8pt 0 12pt; break-inside:avoid; border-radius:0 6px 6px 0; }
+  .box p:last-child { margin:0; }
+  code { font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:8.8pt; background:var(--navy-10); color:var(--navy); padding:1pt 3pt; border-radius:3px; }
+  pre.cmd { font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:8.8pt; background:var(--navy); color:var(--cream); padding:8pt 11pt; border-radius:6px; margin:4pt 0 10pt; white-space:pre-wrap; break-inside:avoid; }
+  .small { font-size:8.5pt; color:var(--navy-70); }
+  .toc li { margin-bottom:2pt; }
+  .pb { break-before:page; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="kicker">Crew Board &middot; Guide</div>
+  <h1>How a Crew Board comes to life</h1>
+  <div class="rule"></div>
+  <p class="sub">One small business's path from a notes vault to a live job board that the owner runs every day, what was learned along the way, and how to build your own with the Crew Board for Claude Code.</p>
+  <p style="margin-top:26pt;font-size:11pt"><b>JC Titus</b> &middot; Titus Mundi LLC &middot; titusmundi.com</p>
+  <p class="small">Written October 2026 from a real renovation business's working notes. Client names, addresses, prices, rates, licence details and trade names have been removed.</p>
+</section>
+
+<h2 class="first">Contents</h2>
+<ol class="toc">
+  <li>What a Crew Board is</li>
+  <li>The starting point: a vault Claude can work in</li>
+  <li>How the board came to life, step by step</li>
+  <li>The rules that made it reliable</li>
+  <li>Build your own</li>
+  <li>How it keeps evolving</li>
+  <li>Lessons and gotchas</li>
+  <li>Appendix: what is in the kit</li>
+</ol>
+
+<h2>1. What a Crew Board is</h2>
+<p>A Crew Board is one private web page with everything a small trades business needs to run its live jobs today:</p>
+<table>
+  <tr><th>Tab</th><th>What it does</th></tr>
+  <tr><td><b>Schedule</b></td><td>A Monday to Friday calendar, plus a weekend column, with every task as a coloured bar showing who is on it. A Today card. Alerts when someone is booked twice or a past task was never ticked off. A "By project" list view.</td></tr>
+  <tr><td><b>Materials</b></td><td>Per job, what must be on site by which date, with two ticks: Ordered and Received. Items turn amber when due within ten days and red when late.</td></tr>
+  <tr><td><b>Tools</b></td><td>Every van load in date order, grouped by site, with the main task that day and a tick for "on site".</td></tr>
+</table>
+<p>The owner uses it alone, from a phone or a laptop: drag a task to another day, add a one-off job, mark things done, tick materials, undo a mistake. The page saves itself. Claude handles anything structural, such as a new job, a new colour, a chain of moves or a holiday change.</p>
+<div class="box"><p><b>The key idea:</b> the board is the record for <i>dates</i>, and the vault is the record for <i>reasons</i>. When a date moves, the board shows it. Why it moved, and what was decided, lives in a note Claude keeps current.</p></div>
+
+<h2>2. The starting point: a vault Claude can work in</h2>
+<p>The board did not start as a board. It started as a notes vault, opened in Obsidian, that Claude Code reads and writes. If you already use a vault like this, you have everything the board needs. If you do not, the free <a href="https://github.com/titusmundi/second-brain-starter">Second Brain starter</a> is one way to set one up, but the Crew Board is a separate, optional add-on and does not require it. In short:</p>
+<ul>
+  <li><b>Two spaces.</b> A personal space (<code>Thinking/</code>) that only the owner writes in, and a working space (<code>Doing/</code>) that Claude maintains: frameworks, examples, a knowledge base, projects.</li>
+  <li><b>A rules file one level above the vault</b> (<code>CLAUDE.md</code>), so Claude reads the conventions at the start of every session without being told.</li>
+  <li><b>A Map</b> (<code>Doing/Map.md</code>) that says what lives where. Everything is reachable from it.</li>
+  <li><b>An update rule:</b> write things down as they happen. Decisions go, dated, into the relevant note's Decisions log. Surprises go into Gotchas, ideas not acted on go into a Parking lot, and every person mentioned gets a short note.</li>
+  <li><b>Working style:</b> the owner talks in plain English. Claude writes the notes, explains in small steps, confirms between them, and verifies before calling anything done.</li>
+</ul>
+<p>That last rule matters most. The board is only trustworthy because the vault around it stays current.</p>
+
+<h2 class="pb">3. How the board came to life, step by step</h2>
+
+<h3>Step 1. Capture the jobs in the vault (late August)</h3>
+<p>The first live jobs went into the vault as project notes: a client note, then a task list with a schedule table (task, who, days, depends on, dates), a materials table and a tools list. Claude built the first schedule from the client's quote: the trades, the order of the work, and a draft sequence of stages.</p>
+<p>It worked, but only on a laptop, and only for reading. You cannot drag a task in a markdown table, and a checkbox in a note does not tell you, on site, what still needs ordering.</p>
+
+<h3>Step 2. Decide: a published page, not a note (31 August)</h3>
+<div class="box"><p><b>Decision:</b> build the board as a published page rather than an Obsidian note, because markdown cannot do colour-coded views or working checkboxes. Recorded, dated, in the board's own vault note on the day it was made.</p></div>
+<p>Claude generated a single self-contained web page from the vault's schedule, materials and tool lists, and published it as a private Claude artifact with a stable link. One colour per job. The job names at the top double as filters.</p>
+
+<h3>Step 3. Make it the daily tool (early September)</h3>
+<p>The owner started opening the board every morning. Two habits came out of that week: a short command (<code>/board</code>) that prints the link, and a bookmark and shortcut file so it is never more than one tap away. Claude rebuilt the board from the vault whenever the plan changed.</p>
+
+<h3>Step 4. The silent failure (version 2)</h3>
+<p>Ticks for materials and tools were added, saved through a separate data file. It looked as if it worked. It did not: no data file was ever published, so every tick lived only in the browser where it was made. It went unnoticed for a while, because each device showed its own ticks back.</p>
+<div class="box"><p><b>Lesson:</b> a save that "seems to work" must be proven. Tick something, reload, open it on another device. Only then is it done.</p></div>
+
+<h3>Step 5. Hand the board to the owner (version 3, 15 September)</h3>
+<p>The owner was asking Claude to move tasks several times a day. Version 3 let the owner do it alone:</p>
+<ul>
+  <li>Drag a task to another day (press and hold on a phone). The whole task moves and keeps its length, skipping weekends and closed days.</li>
+  <li>Open a day to mark a task done, move it to a date, or delete it (tap twice). Add a one-off task. Undo anything for a few seconds.</li>
+  <li>Double-bookings flagged in red, except deliberate half-day handovers.</li>
+  <li><b>The page saves itself</b> by republishing a full copy of itself with the new data inside, a few seconds after a change.</li>
+</ul>
+<p>The first self-save came back intact that evening and carried about 100 old ticks from browser storage onto the board. From that day the board, not the vault, was the record for dates.</p>
+<div class="box"><p><b>Decision:</b> moving a task moves <i>only</i> that task. The tasks carry no dependency data, and a silent chain reaction would surprise more often than it would help. Pushing a chain stays a request to Claude, who lists the moves and confirms first.</p></div>
+
+<h3>Step 6. A category for small jobs (15 September)</h3>
+<p>Half-day and two-day jobs did not fit as "projects". A fifth category, Small jobs, was added in its own colour: each small job is a task under it, with the client and area in the task's note. It has materials and tools lists and a card showing the next one up, but no finish date, because the category never finishes.</p>
+
+<h3>Step 7. Teach the calendar the truth (October)</h3>
+<p>The board started with the full public holiday list closed, the cautious default. A demolition booked on a public holiday showed as "closed" on the board, though the crew was working. When asked, the owner said: <i>we work every day except the week between Christmas and New Year.</i> The calendar rule was rewritten in the vault, every date was checked against its real weekday, and the board's closed days were changed to match.</p>
+
+<h3>Step 8. Read the board back before touching it (October)</h3>
+<p>Two finished jobs still showed open tasks, because the owner had stopped ticking things off once the work was done. Claude read the live board first, confirmed with the owner, marked only those two jobs' tasks and materials done, checked that every other job was untouched, and republished. The local backup copy was refreshed to match.</p>
+
+<h3>Step 9. Feed the rest of the business</h3>
+<p>Because the vault holds the real durations, lead times and working days, everything else draws on the same facts: the written schedule each client receives before work starts, the daily updates, the website brief, quotes. The board is one view of a system, not a separate app.</p>
+
+<h2 class="pb">4. The rules that made it reliable</h2>
+<h3>For Claude</h3>
+<ol>
+  <li><b>Read the live board before changing it.</b> The owner edits it directly, so the published page is the record. Take the data from the live page, apply the change to that, republish to the same link.</li>
+  <li><b>Never republish from an older local copy.</b> Every move and tick since that copy would be lost.</li>
+  <li><b>Change only what was asked.</b> Then diff before publishing: only the intended lines may differ.</li>
+  <li><b>Keep the three blocks and their ids.</b> The page has one style block (<code>css</code>), one data block (<code>seed</code>) and one code block (<code>app</code>), and it rebuilds itself from them when it saves. Never add a block.</li>
+  <li><b>Prove a save before calling it done:</b> change, reload, check on another device.</li>
+  <li><b>Never invent a date.</b> Missing facts go on the vault's open questions list and get asked.</li>
+  <li><b>Check every calendar date against its weekday</b> before writing it.</li>
+  <li><b>Write it down the same day:</b> dated Decisions, Gotchas and Parking lot in the board's vault note.</li>
+  <li><b>No street addresses, full client names or prices on the board.</b> Neighbourhood and first name only.</li>
+</ol>
+<h3>For the owner</h3>
+<ol>
+  <li>The board is where dates live. Move things there yourself.</li>
+  <li>Ask Claude for structure: a new job, a new colour, a chain of moves, holidays, realigning material dates after a big move.</li>
+  <li>Tick things off as they happen, including the last tasks of a finished job. An untidy board stops being trusted.</li>
+  <li>If the status says "Changes on this device only", press Save now.</li>
+</ol>
+
+<h2>5. Build your own</h2>
+<h3>What you need</h3>
+<ul>
+  <li>An Obsidian vault with a <code>Doing/</code>-style working space and a Map, opened by Claude Code at the folder above it.</li>
+  <li>Claude Code with a paid Claude plan (Pro, Max, Team or Enterprise). The free claude.ai plan does not include Claude Code.</li>
+  <li>The ability to publish a private Claude artifact from Claude Code, so the board can be shared with only you and can save itself. The setup tests this before it says it is done.</li>
+  <li>The Crew Board (this plugin). Obsidian is free, and the kit adds no other cost.</li>
+</ul>
+<h3>Install the kit</h3>
+<p>In a terminal, with the Claude Code command-line tool installed, run these two commands:</p>
+<pre class="cmd">claude plugin marketplace add titusmundi/crew-board
+claude plugin install crew-board@crew-board</pre>
+<p>Restart Claude Code if it asks. To keep the files yourself instead, download or clone the repository and use the path to the folder in the first command. Install steps change, so check <b>code.claude.com/docs/en/plugins</b> if anything here does not match what you see.</p>
+<h3>Run it</h3>
+<ol>
+  <li>Open Claude Code at your vault's parent folder and say: <i>"Set up my Crew Board."</i> The <code>crew-board-setup</code> skill takes over.</li>
+  <li>Answer its questions one at a time: who works on your jobs, which jobs are live, the tasks and days for each, your working days and closed days, and the critical materials and tools.</li>
+  <li>It builds the page from the template, publishes it privately, and <b>tests that a save round-trips</b> before saying it is done.</li>
+  <li>It writes <code>Crew Board.md</code> and <code>Working days and holidays.md</code> into your vault and links them from your Map.</li>
+  <li>Type <code>/board</code> any time to get the link.</li>
+</ol>
+<h3>Your first week</h3>
+<ul>
+  <li>Open the board every morning. Move tasks yourself as the day changes.</li>
+  <li>Each time something surprises you, tell Claude, and it goes in Gotchas.</li>
+  <li>At the end of the week, ask Claude to read the board back and update the vault's project notes.</li>
+  <li>Keep the local master copy (<code>Tools/crew-board.html</code>) as your backup. The live board belongs to your Claude account.</li>
+</ul>
+
+<h2 class="pb">6. How it keeps evolving</h2>
+<p>The board went through three versions and several smaller changes in six weeks. None were planned in advance. Each came from using it. What made that safe:</p>
+<ul>
+  <li><b>Every change starts as a sentence from the owner</b> ("we work holidays", "I need small jobs too") and ends as a dated Decision in the board's note. Six months later, the reason is still there.</li>
+  <li><b>Versions, not tweaks.</b> A big change (like making tasks editable) is built as a new version, with the previous one kept as a backup file until the new one has proven itself in daily use.</li>
+  <li><b>The vault answers questions the board raises.</b> When the board showed a closed day the crew was working, the fix was a rule in the vault first, the board second.</li>
+  <li><b>Read back regularly.</b> Ask Claude to read the live board into the vault: what finished, what slipped, what is still open. That keeps both sides honest.</li>
+  <li><b>Parking lot, not scope creep.</b> Ideas that are not needed today are written down and left alone.</li>
+</ul>
+<div class="box"><p><b>A good monthly check (10 minutes):</b> Are finished jobs ticked off? Do closed days match reality? Are there tasks dated in the past? Is anything in Gotchas worth fixing now? Is anything in the Parking lot now needed?</p></div>
+
+<h2>7. Lessons and gotchas</h2>
+<table>
+  <tr><th>What happened</th><th>What to do</th></tr>
+  <tr><td>Ticks saved only in one browser for days, unnoticed.</td><td>Prove every save on a second device.</td></tr>
+  <tr><td>Material needed-by dates did not follow a dragged task.</td><td>After a big move, ask Claude to realign them, and review the list first.</td></tr>
+  <tr><td>Every save reloads the page.</td><td>Normal. The tab and scroll position come back.</td></tr>
+  <tr><td>Two devices edited at once, and the later save won.</td><td>Edit from one device at a time.</td></tr>
+  <tr><td>Holidays were closed by default but the crew worked them.</td><td>Ask about working days on day one, and write the answer down.</td></tr>
+  <tr><td>A finished job still showed open tasks for weeks.</td><td>Tick the last tasks the day the job ends.</td></tr>
+  <tr><td>A local copy fell behind the live board.</td><td>Always read the live board before any change, then refresh the local copy after.</td></tr>
+</table>
+
+<h2>8. Appendix: what is in the kit</h2>
+<table>
+  <tr><th>File</th><th>What it is</th></tr>
+  <tr><td><code>.claude-plugin/plugin.json</code>, <code>marketplace.json</code></td><td>Makes the folder installable as a Claude Code plugin.</td></tr>
+  <tr><td><code>skills/crew-board-setup/SKILL.md</code></td><td>The interview, build, publish and hand-over steps.</td></tr>
+  <tr><td><code>skills/crew-board-setup/template/crew-board.html</code></td><td>The board itself, with sample data: schedule, materials, tools, drag and drop, undo, double-booking alerts, self-saving, light and dark themes, phone support.</td></tr>
+  <tr><td><code>template/Crew Board.md</code>, <code>Working days and holidays.md</code></td><td>Vault note templates.</td></tr>
+  <tr><td><code>skills/crew-board-update/SKILL.md</code></td><td>The safe change loop, and the common changes.</td></tr>
+  <tr><td><code>commands/board.md</code></td><td>The <code>/board</code> command.</td></tr>
+  <tr><td><code>README.md</code>, <code>LICENSE</code></td><td>What the kit is, what it needs, and the MIT licence.</td></tr>
+  <tr><td><code>docs/</code></td><td>This guide, as PDF and HTML, with the brand fonts and logo it uses.</td></tr>
+</table>
+<p class="small">The kit is a starting point. Adapt the questions, the tabs and the rules to your trade, and record each change in your vault the day you make it.</p>
+<p class="small">Crew Board, version 0.1.0, October 2026. MIT licence, copyright Titus Mundi LLC. An independent project, not affiliated with or endorsed by Anthropic or Obsidian.</p>
+
+</body>
+</html>

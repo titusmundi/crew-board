@@ -1,0 +1,12 @@
+{
+  "name": "crew-board",
+  "description": "An optional add-on for small trades and project businesses that already keep an Obsidian vault worked on by Claude Code.",
+  "owner": { "name": "Titus Mundi LLC" },
+  "plugins": [
+    {
+      "name": "crew-board",
+      "source": "./",
+      "description": "Set up and grow a Crew Board for a small trades business, next to an Obsidian vault."
+    }
+  ]
+}
